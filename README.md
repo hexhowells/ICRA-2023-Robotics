@@ -40,6 +40,7 @@ Controlling/reading devices
 ```python
 actuator_device.setPosition(1)
 sensor_device.getValues()
+sensor_device.getValue()
 ```
 
 ### Devices
