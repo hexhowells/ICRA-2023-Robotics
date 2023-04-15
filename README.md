@@ -8,6 +8,8 @@
 
 Submition for the ICRA 2023 Humanoid Robot Wrestling Competition.
 
+Link to competition page can be found [here](https://github.com/cyberbotics/wrestling).
+
 ![Webots screenshot](preview/thumbnail.jpg "Webots screenshot")
 
 ## Rules
