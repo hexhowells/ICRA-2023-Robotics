@@ -64,3 +64,50 @@ Each actuator above has a positional sensor the device is accessed by appending 
 - Foot/Bumper/Right
 - Fsr
 
+
+## Utility Files
+
+### Camera.py
+```python
+camera = Camera(robot, camera_name)
+camera.get_image()  # get an openCV image (BGRA)
+```
+
+### Accelerometer()
+```python
+accel = Accelerometer(robot, time_step, history_steps=10)
+accel.get_values()  # current accelerometer values
+accel.get_average()  # accelerometer average of the last HISTORY_STEPS values
+accel.update_average()  # update the average
+accel.get_new_average()  # update and return new average
+```
+
+### FallDetection
+```python
+fall = FallDetection(time_step, robot)
+fall.check()  # check if robot has fallen
+```
+
+### MotionLibrary
+```python
+motion = MotionLibrary()
+motion.add(name, motion_path, loop=False)  # add new motion to library
+motion.get(name)  # get motion
+motion.play(name)  # play motion
+```
+
+### ImageProcessing
+```python
+ip = ImageProcessing()
+ip.locate_opponent(image)  ' locate the opponent robot in the image
+```
+
+### GaitManager
+```python
+gait = GaitManager(robot, time_step)
+gait.update_theta()  # needs updating at every step
+
+# radius > 0 is a right turn
+# heading = 0 is straight on. heading > 0 is turning left 
+gait.command_to_motors(desired_radius, heading_angle)
+```
