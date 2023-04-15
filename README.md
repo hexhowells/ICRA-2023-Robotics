@@ -34,6 +34,12 @@ Actuators and sensors are accessed via the ```getDevice``` method.
 device = Robot.getDevice("device-name")
 ```
 
+Controlling/reading devices
+```python
+actuator_device.setPosition(1)
+sensor_device.getValues()
+```
+
 ### Devices
 
 #### Actuators
