@@ -24,3 +24,43 @@ The *coverage* reflects how far a robot has moved inside the ring. It is compute
 ```python
 coverage = X_max + Y_max - X_min - Y_min
 ```
+
+---
+
+## Notes
+
+Actuators and sensors are accessed via the ```getDevice``` method.
+```python
+device = Robot.getDevice("device-name")
+```
+
+### Devices
+
+#### Actuators
+All actuator device names except the head have either L or R preceeding them to indicate the left or right actuator.
+
+- HeadPitch/Yaw
+- ShoulderPitch/Roll
+- ElbowYaw/Pitch
+- WristYaw
+- Phalanx1-8 (8 hand joints)
+- HipPitch/Roll
+- HipYawPitch
+- KneePitch
+- AnklePitch/Roll
+
+#### Sensors
+Each actuator above has a positional sensor the device is accessed by appending an ```S``` to the end of the actuator device name. Similar to the actuators; the two foot bumper sensors and Fsr sensor is preceeded with either L or R.
+
+- accelerometer
+- CameraBottom
+- CameraTop
+- gps
+- gyro
+- Sonar/Left
+- Sonar/Right
+- inertial unit
+- Foot/Bumper/Left
+- Foot/Bumper/Right
+- Fsr
+
