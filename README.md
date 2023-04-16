@@ -29,6 +29,8 @@ coverage = X_max + Y_max - X_min - Y_min
 
 ---
 
+<br>
+
 ## Notes
 
 Actuators and sensors are accessed via the ```getDevice``` method.
