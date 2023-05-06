@@ -1,39 +1,199 @@
-# Copyright 1996-2023 Cyberbotics Ltd.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-"""Minimalist controller example for the Robot Wrestling Tournament.
-   Demonstrates how to play a simple motion file."""
-
 from controller import Robot
 import sys
-
-# We provide a set of utilities to help you with the development of your controller. You can find them in the utils folder.
-# If you want to see a list of examples that use them, you can go to https://github.com/cyberbotics/wrestling#demo-robot-controllers
 sys.path.append('..')
-from utils.motion_library import MotionLibrary
+
+from utils.image_processing import ImageProcessing as IP
+from utils.fall_detection import FallDetection
+from utils.gait_manager import GaitManager
+from utils.camera import Camera
+
+import cv2
+import numpy as np
+import random
+import time
+
+from floor import Floor
+from imutils import filter_lines
 
 
-class Wrestler (Robot):
+class HexBot (Robot):
+    def __init__(self):
+        Robot.__init__(self)
+        self.time_step = int(self.getBasicTimeStep())
+
+        self.camera = Camera(self)
+        self.cameraBottom = Camera(self, camera_name='CameraBottom')
+        self.fall_detector = FallDetection(self.time_step, self)
+        self.gait_manager = GaitManager(self, self.time_step)
+        self.heading_angle = 3.14 / 2
+        self.counter = 0
+        self.opponent_x = [0]*10
+
+        self.floor_model = Floor(threshold=10, img_step=5, img_size=(160, 120))
+
+        self.sonarL = self.getDevice('Sonar/Left')
+        self.sonarL.enable(1)
+        self.sonarR = self.getDevice('Sonar/Right')
+        self.sonarR.enable(1)
+
+        self.head = self.getDevice('HeadPitch')
+        self.head.setPosition(0.25)
+
+        self.LHipPitch = self.getDevice('LHipPitch')
+        self.RHipPitch = self.getDevice('RHipPitch')
+
+        self.LKneePitch = self.getDevice('LKneePitch')
+        self.RKneePitch = self.getDevice('RKneePitch')
+
+        self.LAnklePitch = self.getDevice('LAnklePitch')
+        self.RAnklePitch = self.getDevice('RAnklePitch')
+
+        self.RShoulderRoll = self.getDevice('RShoulderRoll')
+        self.LShoulderRoll = self.getDevice('LShoulderRoll')
+
+        self.RShoulderPitch = self.getDevice('RShoulderPitch')
+        self.LShoulderPitch = self.getDevice('LShoulderPitch')
+
+        self.RElbowRoll = self.getDevice('RElbowRoll')
+        self.LElbowRoll = self.getDevice('LElbowRoll')
+        
+        self.light_it_up_contest()
+
+
+    def light_it_up_contest(self):
+        self.getDevice('ChestBoard/Led').set(-1)
+        self.getDevice('Face/Led/Left').set(-1)
+        self.getDevice('Face/Led/Right').set(-1)
+        self.getDevice('Ears/Led/Right').set(-1)
+        self.getDevice('Ears/Led/Right').set(-1)
+        self.getDevice('LFoot/Led').set(-1)
+        self.getDevice('RFoot/Led').set(-1)
+
+
+    def position_arms(self):
+        # self.RShoulderRoll.setPosition(0)
+        # self.LShoulderRoll.setPosition(0)
+        self.RShoulderPitch.setPosition(1.2)
+        self.LShoulderPitch.setPosition(1.2)
+        # self.RElbowRoll.setPosition(0.6)
+        # self.LElbowRoll.setPosition(-0.6)
+        
+
+    def dive(self):
+        self.LHipPitch.setPosition(-1)
+        self.RHipPitch.setPosition(-1)
+
+        self.LKneePitch.setPosition(0.8)
+        self.RKneePitch.setPosition(0.8)
+
+        self.LAnklePitch.setPosition(-0.5)
+        self.RAnklePitch.setPosition(-0.5)
+
+        self.RShoulderRoll.setPosition(-0.6)
+        self.LShoulderRoll.setPosition(0.6)
+
+        self.step(200)
+
+
+        
     def run(self):
-        # to load all the motions from the motions folder, we use the MotionLibrary class:
-        motion_library = MotionLibrary()
-        # retrieves the WorldInfo.basicTimeTime (ms) from the world file
-        time_step = int(self.getBasicTimeStep())
-        while self.step(time_step) != -1:  # mandatory function to make the simulation run
-            motion_library.play('Backwards')
+        #self.dive()
+        #self.position_arms()
+        while self.step(self.time_step) != -1:
+            # We need to update the internal theta value of the gait manager at every step:
+            t = self.getTime()
+            self.gait_manager.update_theta()
+
+            if 0.3 < t < 2:
+                self.start_sequence()
+            elif t > 2:
+                self.fall_detector.check()
+
+                edge = self.detect_line()
+                if edge:
+                    self.gait_manager.command_to_motors(desired_radius=0.1, heading_angle=0)
+                else:
+                    self.walk()
+
+
+    def detect_line(self):
+        # Load the image
+        img = self.cameraBottom.get_image()
+        top_img = self.camera.get_image()
+
+        #if random.randint(0, 10) == 1:
+            #cv2.imwrite(f"topImages3/img_{random.randint(0, 10_000)}.png", top_img)
+
+        filtered_img = filter_lines(img)
+
+        coords = self.floor_model.segment_floor(filtered_img)
+
+        heights = [filtered_img.shape[0]-a[1] for a, b in coords]
+        heights = heights[3:-3]
+        heights = [x if x > 0 else 100 for x in heights]
+        
+        if min(heights) < 35:
+            return True
+        else:
+            return False
+
+
+
+    def start_sequence(self):
+        """At the beginning of the match, the robot walks forwards to move away from the edges."""
+        self.gait_manager.command_to_motors(heading_angle=0)
+
+
+    def detect_sonar(self):
+        """Return a tuple of the recorded distances from each sonar sensor. (LeftSonar, RightSonar)"""
+        return (self.sonarL.getValue(), self.sonarR.getValue())
+
+
+    def update_opponent_x(self):
+         x_pos = self._get_normalized_opponent_x()  # -0.1 and 0.1 is basically facing the opponent
+         self.opponent_x.append(x_pos)
+         self.opponent_x.pop(0)
+
+         return sum(self.opponent_x) / 10
+
+
+    def calculate_variance(self, arr):
+        n = len(arr)
+        mean = sum(arr) / n
+        variance = sum((x - mean) ** 2 for x in arr) / n
+
+        return variance
+
+
+    def hallucinating(self):
+        # do we think we see the opponent when we actually dont?
+        # issue with the given _get_normalised_opponent_x function
+        var = self.calculate_variance(self.opponent_x)
+        return var > 0.3
+
+
+    def walk(self): 
+        x_pos = self.update_opponent_x()
+
+        if (-0.4 < x_pos < 0.4) or self.hallucinating(): # forward
+            self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
+        elif x_pos > 0: # right
+            self.gait_manager.command_to_motors(desired_radius=0.1, heading_angle=1)
+        else: # left
+            self.gait_manager.command_to_motors(desired_radius=-0.1, heading_angle=1)
+
+
+    def _get_normalized_opponent_x(self):
+        """Locate the opponent in the image and return its horizontal position in the range [-1, 1]."""
+        img = self.camera.get_image()
+        _, _, horizontal_coordinate = IP.locate_opponent(img)
+
+        if horizontal_coordinate is None:
+            return 0
+
+        return horizontal_coordinate * 2 / img.shape[1] - 1
 
 
 # create the Robot instance and run main loop
-wrestler = Wrestler()
+wrestler = HexBot()
 wrestler.run()
