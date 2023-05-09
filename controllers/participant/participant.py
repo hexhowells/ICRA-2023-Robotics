@@ -169,7 +169,7 @@ class HexBot (Robot):
         # do we think we see the opponent when we actually dont?
         # issue with the given _get_normalised_opponent_x function
         var = self.calculate_variance(self.opponent_x)
-        return var > 0.3
+        return var > 0.25
 
 
     def walk(self): 
