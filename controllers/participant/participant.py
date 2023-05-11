@@ -108,6 +108,7 @@ class HexBot (Robot):
                 self.start_sequence()
             elif t > 1.5:
                 self.fall_detector.check()
+                self.position_arms()
 
                 edge = self.detect_line()
                 if edge:
