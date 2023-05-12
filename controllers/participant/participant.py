@@ -98,7 +98,7 @@ class HexBot (Robot):
         
     def run(self):
         #self.dive()
-        self.position_arms()
+        #self.position_arms()
         while self.step(self.time_step) != -1:
             # We need to update the internal theta value of the gait manager at every step:
             t = self.getTime()
@@ -108,7 +108,7 @@ class HexBot (Robot):
                 self.start_sequence()
             elif t > 1.5:
                 self.fall_detector.check()
-                self.position_arms()
+                #self.position_arms()
 
                 edge = self.detect_line()
                 if edge:
