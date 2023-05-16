@@ -173,7 +173,10 @@ class HexBot (Robot):
         return var > 0.25
 
 
-    def walk(self): 
+    def walk(self):
+        self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
+        return 0
+    
         x_pos = self.update_opponent_x()
 
         if (-0.4 < x_pos < 0.4) or self.hallucinating(): # forward
