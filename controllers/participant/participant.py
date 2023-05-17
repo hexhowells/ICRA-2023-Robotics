@@ -170,13 +170,10 @@ class HexBot (Robot):
         # do we think we see the opponent when we actually dont?
         # issue with the given _get_normalised_opponent_x function
         var = self.calculate_variance(self.opponent_x)
-        return var > 0.25
+        return var > 0.1
 
 
     def walk(self):
-        self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
-        return 0
-    
         x_pos = self.update_opponent_x()
 
         if (-0.4 < x_pos < 0.4) or self.hallucinating(): # forward
