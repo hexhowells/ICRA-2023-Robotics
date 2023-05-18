@@ -107,6 +107,9 @@ class HexBot (Robot):
             if t > 50:
                 self.fall_detector.check()
                 continue
+                
+            if int(t) == 7:
+                self.dive()
 
             if 0.3 < t < 2:
                 self.start_sequence()
