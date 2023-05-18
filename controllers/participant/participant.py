@@ -137,7 +137,7 @@ class HexBot (Robot):
         heights = heights[3:-3]
         heights = [x if x > 0 else 100 for x in heights]
         
-        if min(heights) < 40:
+        if min(heights) < 60:
             return True
         else:
             return False
