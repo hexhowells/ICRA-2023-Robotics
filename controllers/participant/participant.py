@@ -94,15 +94,20 @@ class HexBot (Robot):
 
         self.step(200)
 
-
         
     def run(self):
         #self.dive()
         #self.position_arms()
+  
         while self.step(self.time_step) != -1:
             # We need to update the internal theta value of the gait manager at every step:
             t = self.getTime()
             self.gait_manager.update_theta()
+
+            
+            if t > 35:
+                self.fall_detector.check()
+                continue
 
             if 0.3 < t < 1.5:
                 self.start_sequence()
@@ -142,7 +147,8 @@ class HexBot (Robot):
 
     def start_sequence(self):
         """At the beginning of the match, the robot walks forwards to move away from the edges."""
-        self.gait_manager.command_to_motors(heading_angle=0)
+        #self.gait_manager.command_to_motors(heading_angle=0)
+        self.gait_manager.command_to_motors(desired_radius=-0.1, heading_angle=1)
 
 
     def detect_sonar(self):
@@ -174,6 +180,9 @@ class HexBot (Robot):
 
 
     def walk(self):
+        self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
+        return 0
+
         x_pos = self.update_opponent_x()
 
         if (-0.4 < x_pos < 0.4) or self.hallucinating(): # forward
