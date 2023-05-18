@@ -28,6 +28,7 @@ class HexBot (Robot):
         self.heading_angle = 3.14 / 2
         self.counter = 0
         self.opponent_x = [0]*10
+        self.dist_threshold = 100  # 60
 
         self.floor_model = Floor(threshold=10, img_step=5, img_size=(160, 120))
 
@@ -104,6 +105,9 @@ class HexBot (Robot):
             t = self.getTime()
             self.gait_manager.update_theta()
             
+            if t > 60:
+                self.dist_threshold = 60
+            
             if t > 200:
                 self.fall_detector.check()
                 continue
@@ -137,7 +141,7 @@ class HexBot (Robot):
         heights = heights[3:-3]
         heights = [x if x > 0 else 100 for x in heights]
         
-        if min(heights) < 60:
+        if min(heights) < self.dist_threshold:
             return True
         else:
             return False
