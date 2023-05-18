@@ -103,7 +103,9 @@ class HexBot (Robot):
             # We need to update the internal theta value of the gait manager at every step:
             t = self.getTime()
             self.gait_manager.update_theta()
-
+            
+            if 13 > t > 12:
+                self.dive()
             
             if t > 31:
                 self.fall_detector.check()
