@@ -105,13 +105,12 @@ class HexBot (Robot):
             self.gait_manager.update_theta()
 
             
-            if t > 35:
+            if t > 2:
                 self.fall_detector.check()
                 continue
 
             if 0.3 < t < 1.5:
-                pass
-                #self.start_sequence()
+                self.start_sequence()
             elif t > 1.5:
                 self.fall_detector.check()
                 #self.position_arms()
