@@ -97,7 +97,7 @@ class HexBot (Robot):
         
     def run(self):
         #self.dive()
-        #self.position_arms()
+        self.position_arms()
   
         while self.step(self.time_step) != -1:
             # We need to update the internal theta value of the gait manager at every step:
