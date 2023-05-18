@@ -104,9 +104,9 @@ class HexBot (Robot):
             t = self.getTime()
             self.gait_manager.update_theta()
             
-            #if t > 50:
-                #self.fall_detector.check()
-                #continue
+            if t > 7:
+                self.fall_detector.check()
+                continue
 
             if 0.3 < t < 2:
                 self.start_sequence()
