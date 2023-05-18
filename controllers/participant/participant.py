@@ -110,6 +110,7 @@ class HexBot (Robot):
                 continue
 
             if 0.3 < t < 1.5:
+                pass
                 #self.start_sequence()
             elif t > 1.5:
                 self.fall_detector.check()
