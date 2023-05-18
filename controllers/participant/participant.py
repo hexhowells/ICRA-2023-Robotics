@@ -104,15 +104,15 @@ class HexBot (Robot):
             t = self.getTime()
             self.gait_manager.update_theta()
             
-            if t > 50:
-                self.fall_detector.check()
-                continue
+            #if t > 50:
+                #self.fall_detector.check()
+                #continue
 
             if 0.3 < t < 2:
                 self.start_sequence()
             elif t > 2:
                 self.fall_detector.check()
-                #self.position_arms()
+                self.position_arms()
 
                 edge = self.detect_line()
                 if edge:
