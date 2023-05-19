@@ -15,6 +15,8 @@ import time
 from floor import Floor
 from imutils import filter_lines
 
+#from inference import ObjModel
+
 
 class HexBot (Robot):
     def __init__(self):
@@ -38,6 +40,10 @@ class HexBot (Robot):
 
         self.head = self.getDevice('HeadPitch')
         self.head.setPosition(0.25)
+        
+        self.last_time = 0
+
+        #self.obj_model = ObjModel("ObjDetectModel_best.pth")
 
         self.LHipPitch = self.getDevice('LHipPitch')
         self.RHipPitch = self.getDevice('RHipPitch')
@@ -57,6 +63,9 @@ class HexBot (Robot):
         self.RElbowRoll = self.getDevice('RElbowRoll')
         self.LElbowRoll = self.getDevice('LElbowRoll')
         
+        self.RElbowYaw = self.getDevice('RElbowYaw')
+        self.LElbowYaw = self.getDevice('LElbowYaw')
+        
         self.light_it_up_contest()
 
 
@@ -71,14 +80,33 @@ class HexBot (Robot):
 
 
     def position_arms(self):
-        # self.RShoulderRoll.setPosition(0)
-        # self.LShoulderRoll.setPosition(0)
-        self.RShoulderPitch.setPosition(0.5)
-        self.LShoulderPitch.setPosition(0.5)
-        # self.RElbowRoll.setPosition(0.6)
-        # self.LElbowRoll.setPosition(-0.6)
+        self.RShoulderPitch.setPosition(0.6)
+        self.LShoulderPitch.setPosition(0.6)
         
-
+        self.RElbowYaw.setPosition(1.5)
+        self.LElbowYaw.setPosition(-1.5)
+        
+        #self.LAnklePitch.setPosition(-0.06)
+        #self.RAnklePitch.setPosition(-0.06)
+        self.RElbowRoll.setPosition(0.8)
+        self.LElbowRoll.setPosition(-0.8)
+        
+        
+    def attack(self):
+        t = self.getTime()
+        print((t - self.last_time))
+        if (t - self.last_time) > 0.8:
+            self.RShoulderPitch.setPosition(0)
+            self.LShoulderPitch.setPosition(0)
+        else:
+            self.RShoulderPitch.setPosition(0.5)
+            self.LShoulderPitch.setPosition(0.5)
+            
+        if (t - self.last_time) > 1:
+            self.last_time = t
+        
+        
+        
     def dive(self):
         self.LHipPitch.setPosition(-1)
         self.RHipPitch.setPosition(-1)
@@ -94,25 +122,23 @@ class HexBot (Robot):
 
         self.step(200)
 
+
         
     def run(self):
         #self.dive()
-        #self.position_arms()
-  
+        self.position_arms()
         while self.step(self.time_step) != -1:
             # We need to update the internal theta value of the gait manager at every step:
             t = self.getTime()
             self.gait_manager.update_theta()
-            
-            if t > 50:
-                self.fall_detector.check()
-                continue
 
-            if 0.3 < t < 2:
+            if 0.3 < t < 1.5:
+                #pass
                 self.start_sequence()
-            elif t > 2:
+            elif t > 1.5:
                 self.fall_detector.check()
-                #self.position_arms()
+                self.position_arms()
+                self.attack()
 
                 edge = self.detect_line()
                 if edge:
@@ -146,8 +172,7 @@ class HexBot (Robot):
 
     def start_sequence(self):
         """At the beginning of the match, the robot walks forwards to move away from the edges."""
-        #self.gait_manager.command_to_motors(heading_angle=0)
-        self.gait_manager.command_to_motors(desired_radius=-0.1, heading_angle=1)
+        self.gait_manager.command_to_motors(heading_angle=0)
 
 
     def detect_sonar(self):
@@ -155,8 +180,8 @@ class HexBot (Robot):
         return (self.sonarL.getValue(), self.sonarR.getValue())
 
 
-    def update_opponent_x(self):
-         x_pos = self._get_normalized_opponent_x()  # -0.1 and 0.1 is basically facing the opponent
+    def update_opponent_x(self, img):
+         x_pos = self._get_normalized_opponent_x(img)  # -0.1 and 0.1 is basically facing the opponent
          self.opponent_x.append(x_pos)
          self.opponent_x.pop(0)
 
@@ -175,14 +200,19 @@ class HexBot (Robot):
         # do we think we see the opponent when we actually dont?
         # issue with the given _get_normalised_opponent_x function
         var = self.calculate_variance(self.opponent_x)
-        return var > 0.1
+        return var > 0.25
 
 
-    def walk(self):
+    def walk(self): 
+        img = self.camera.get_image()
+
+        x_pos = self.update_opponent_x(img)
+        
+        #opp_detected = self.obj_model.detect_opponent(img)
+        #print(f'{opp_detected=}')
+
         self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
         return 0
-
-        x_pos = self.update_opponent_x()
 
         if (-0.4 < x_pos < 0.4) or self.hallucinating(): # forward
             self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
@@ -192,9 +222,9 @@ class HexBot (Robot):
             self.gait_manager.command_to_motors(desired_radius=-0.1, heading_angle=1)
 
 
-    def _get_normalized_opponent_x(self):
+    def _get_normalized_opponent_x(self, img):
         """Locate the opponent in the image and return its horizontal position in the range [-1, 1]."""
-        img = self.camera.get_image()
+        #img = self.camera.get_image()
         _, _, horizontal_coordinate = IP.locate_opponent(img)
 
         if horizontal_coordinate is None:
