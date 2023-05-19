@@ -86,21 +86,21 @@ class HexBot (Robot):
         self.RElbowYaw.setPosition(1.5)
         self.LElbowYaw.setPosition(-1.5)
         
-        #self.LAnklePitch.setPosition(-0.06)
-        #self.RAnklePitch.setPosition(-0.06)
         self.RElbowRoll.setPosition(0.8)
         self.LElbowRoll.setPosition(-0.8)
         
         
     def attack(self):
         t = self.getTime()
-        print((t - self.last_time))
+
         if (t - self.last_time) > 0.8:
             self.RShoulderPitch.setPosition(0)
             self.LShoulderPitch.setPosition(0)
+            
+            self.RElbowRoll.setPosition(-0.5)
+            self.LElbowRoll.setPosition(0.5)
         else:
-            self.RShoulderPitch.setPosition(0.5)
-            self.LShoulderPitch.setPosition(0.5)
+            self.position_arms()
             
         if (t - self.last_time) > 1:
             self.last_time = t
