@@ -96,9 +96,6 @@ class HexBot (Robot):
         if (t - self.last_time) > 0.8:
             self.RShoulderPitch.setPosition(0)
             self.LShoulderPitch.setPosition(0)
-            
-            self.RElbowRoll.setPosition(-0.5)
-            self.LElbowRoll.setPosition(0.5)
         else:
             self.position_arms()
             
