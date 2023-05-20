@@ -177,7 +177,7 @@ class HexBot (Robot):
     def start_sequence(self):
         """At the beginning of the match, the robot walks forwards to move away from the edges."""
         #self.gait_manager.command_to_motors(heading_angle=-0.8)
-        self.gait_manager.command_to_motors(heading_angle=-1.2)
+        self.gait_manager.command_to_motors(heading_angle=-1.4)
 
 
     def detect_sonar(self):
