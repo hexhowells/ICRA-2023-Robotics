@@ -133,11 +133,6 @@ class HexBot (Robot):
             t = self.getTime()
             self.gait_manager.update_theta()
 
-            if 6 > t > 5:
-                self.LAnklePitch.setPosition(0.9)
-                self.RAnklePitch.setPosition(0.9)
-                self.step(200)
-
             if t < self.start_time:
                 #pass
                 self.start_sequence()

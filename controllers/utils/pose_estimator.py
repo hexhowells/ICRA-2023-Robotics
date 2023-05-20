@@ -27,7 +27,7 @@ class PoseEstimator:
     def __init__(self, robot, time_step, algorithm='madgwick'):
         '''Initializes the pose estimator.'''
         self.time_step_ms = time_step
-        self.accelerometer = Accelerometer(robot, time_step, history_steps=30)
+        self.accelerometer = Accelerometer(robot, time_step, history_steps=15)
         self.gyroscope = robot.getDevice('gyro')
         self.gyroscope.enable(time_step)
         self.time_step = time_step
