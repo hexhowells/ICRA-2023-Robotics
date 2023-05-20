@@ -47,16 +47,23 @@ class GaitManager():
         and a desired heading angle (in radians. 0 is straight on, > 0 is turning left).
         Send the commands to the motors.
         """
+
+        # Move right leg
         if not desired_radius:
             desired_radius = 1e3
         x, y, z, yaw = self.gait_generator.compute_leg_position(
             is_left=False, desired_radius=desired_radius, heading_angle=heading_angle)
+
         right_target_commands = self.kinematics.inverse_leg(x * 1e3, y * 1e3, z * 1e3, 0, 0, yaw, is_left=False)
+
         for command, motor in zip(right_target_commands, self.R_leg_motors):
             motor.setPosition(command)
 
+        # Move left leg
         x, y, z, yaw = self.gait_generator.compute_leg_position(
             is_left=True, desired_radius=desired_radius, heading_angle=heading_angle)
+
         left_target_commands = self.kinematics.inverse_leg(x * 1e3, y * 1e3, z * 1e3, 0, 0, yaw, is_left=True)
+
         for command, motor in zip(left_target_commands, self.L_leg_motors):
             motor.setPosition(command)
