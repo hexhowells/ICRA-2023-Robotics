@@ -106,26 +106,31 @@ class HexBot (Robot):
         
         
         
-    def dive(self):
+    def flip(self):
+        self.RShoulderPitch.setPosition(0.4)
+        self.LShoulderPitch.setPosition(0.4)
+
+        self.step(200)
+
         self.LHipPitch.setPosition(-1)
         self.RHipPitch.setPosition(-1)
 
-        self.LKneePitch.setPosition(0.8)
-        self.RKneePitch.setPosition(0.8)
+        self.LKneePitch.setPosition(0)
+        self.RKneePitch.setPosition(0)
 
         self.LAnklePitch.setPosition(-0.5)
         self.RAnklePitch.setPosition(-0.5)
 
-        self.RShoulderRoll.setPosition(-0.6)
-        self.LShoulderRoll.setPosition(0.6)
+        self.step(500)
 
-        self.step(100)
-        #self.fall_detector.check()
+        self.RShoulderPitch.setPosition(-2)
+        self.LShoulderPitch.setPosition(-2)
+
+        self.step(500)
 
 
         
     def run(self):
-        
         self.position_arms()
 
         while self.step(self.time_step) != -1:
@@ -138,6 +143,9 @@ class HexBot (Robot):
 
             if t > 120:
                 self.edge_dist = 40
+
+            if t > 175:  # Last ditch effort to gain some movement points
+                self.flip()
 
             if t < self.start_time:
                 #pass
