@@ -15,7 +15,6 @@ import time
 from floor import Floor
 from imutils import filter_lines
 
-#from inference import ObjModel
 
 
 class HexBot (Robot):
@@ -42,8 +41,6 @@ class HexBot (Robot):
         self.head.setPosition(0.25)
         
         self.last_time = 0
-
-        #self.obj_model = ObjModel("ObjDetectModel_best.pth")
 
         self.LHipPitch = self.getDevice('LHipPitch')
         self.RHipPitch = self.getDevice('RHipPitch')
