@@ -42,6 +42,8 @@ class HexBot (Robot):
         
         self.last_time = 0
 
+        self.start_time = 1.5
+
         self.LHipPitch = self.getDevice('LHipPitch')
         self.RHipPitch = self.getDevice('RHipPitch')
 
@@ -126,10 +128,10 @@ class HexBot (Robot):
             t = self.getTime()
             self.gait_manager.update_theta()
 
-            if 0.3 < t < 1.5:
+            if 0.3 < t < self.start_time:
                 #pass
                 self.start_sequence()
-            elif t > 1.5:
+            elif t > self.start_time:
                 fell_over = self.fall_detector.check()
                 if fell_over:
                     self.position_arms()
