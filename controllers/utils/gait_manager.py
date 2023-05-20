@@ -67,3 +67,8 @@ class GaitManager():
 
         for command, motor in zip(left_target_commands, self.L_leg_motors):
             motor.setPosition(command)
+
+
+    def reset_accel(self):
+        for _ in range(15):
+            self.gait_generator.update_accel()

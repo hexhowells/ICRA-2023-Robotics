@@ -133,18 +133,17 @@ class HexBot (Robot):
                 fell_over = self.fall_detector.check()
                 if fell_over:
                     self.position_arms()
+                    gait_manager.update_accel()
                     self.step(100)
 
                 self.attack()
 
                 edge = self.detect_line()
                 if edge:
-                    #print("RIGHT")
                     self.gait_manager.command_to_motors(desired_radius=0.1, heading_angle=0)
                 else:
-                    #print("FORWARD")
-                    self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
-                    #self.walk()
+                    #self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
+                    self.walk()
 
 
     def detect_line(self):
@@ -207,12 +206,6 @@ class HexBot (Robot):
         img = self.camera.get_image()
 
         x_pos = self.update_opponent_x(img)
-        
-        #opp_detected = self.obj_model.detect_opponent(img)
-        #print(f'{opp_detected=}')
-
-        self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
-        return 0
 
         if (-0.4 < x_pos < 0.4) or self.hallucinating(): # forward
             self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
