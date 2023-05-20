@@ -41,8 +41,8 @@ class HexBot (Robot):
         self.head.setPosition(0.25)
         
         self.last_time = 0
-
         self.start_time = 4
+        self.edge_dist = 100
 
         self.LHipPitch = self.getDevice('LHipPitch')
         self.RHipPitch = self.getDevice('RHipPitch')
@@ -133,6 +133,9 @@ class HexBot (Robot):
             t = self.getTime()
             self.gait_manager.update_theta()
 
+            if t > 90:
+                self.edge_dist = 60
+
             if t < self.start_time:
                 #pass
                 self.start_sequence()
@@ -170,7 +173,7 @@ class HexBot (Robot):
         heights = heights[3:-3]
         heights = [x if x > 0 else 100 for x in heights]
         
-        if min(heights) < 60:
+        if min(heights) < self.edge_dist:
             return True
         else:
             return False
