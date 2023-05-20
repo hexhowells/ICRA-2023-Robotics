@@ -70,5 +70,5 @@ class GaitManager():
 
 
     def reset_accel(self):
-        for _ in range(15):
+        for _ in range(30):
             self.gait_generator.update_accel()

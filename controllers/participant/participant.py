@@ -133,6 +133,11 @@ class HexBot (Robot):
             t = self.getTime()
             self.gait_manager.update_theta()
 
+            if 6 > t > 5:
+                self.LAnklePitch.setPosition(0.9)
+                self.RAnklePitch.setPosition(0.9)
+                self.step(200)
+
             if t < self.start_time:
                 #pass
                 self.start_sequence()
@@ -150,8 +155,8 @@ class HexBot (Robot):
                 if edge:
                     self.gait_manager.command_to_motors(desired_radius=0.1, heading_angle=0)
                 else:
-                    #self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
-                    self.walk()
+                    self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
+                    #self.walk()
 
 
     def detect_line(self):
