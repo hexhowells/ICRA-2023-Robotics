@@ -10,6 +10,10 @@ Submition for the ICRA 2023 Humanoid Robot Wrestling Competition.
 
 Link to competition page can be found [here](https://github.com/cyberbotics/wrestling).
 
+Link to the leaderboard can be found [here](https://webots.cloud/run?version=R2023a&url=https%3A%2F%2Fgithub.com%2Fcyberbotics%2Fwrestling%2Fblob%2Fmain%2Fworlds%2Fwrestling.wbt&type=competition).
+
+Link to tournament results page can be found [here](https://github.com/cyberbotics/wrestling/blob/main/result.md).
+
 ![Webots screenshot](preview/thumbnail.jpg "Webots screenshot")
 
 ## Rules
