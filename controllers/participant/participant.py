@@ -42,7 +42,7 @@ class HexBot (Robot):
         
         self.last_time = 0
 
-        self.start_time = 5
+        self.start_time = 3
 
         self.LHipPitch = self.getDevice('LHipPitch')
         self.RHipPitch = self.getDevice('RHipPitch')
@@ -119,13 +119,15 @@ class HexBot (Robot):
         self.RShoulderRoll.setPosition(-0.6)
         self.LShoulderRoll.setPosition(0.6)
 
-        self.step(200)
+        self.step(100)
+        #self.fall_detector.check()
 
 
         
     def run(self):
-        #self.dive()
+        
         self.position_arms()
+
         while self.step(self.time_step) != -1:
             # We need to update the internal theta value of the gait manager at every step:
             t = self.getTime()
@@ -136,6 +138,7 @@ class HexBot (Robot):
                 self.start_sequence()
             elif t > self.start_time:
                 fell_over = self.fall_detector.check()
+
                 if fell_over:
                     self.position_arms()
                     gait_manager.update_accel()
@@ -177,7 +180,7 @@ class HexBot (Robot):
     def start_sequence(self):
         """At the beginning of the match, the robot walks forwards to move away from the edges."""
         #self.gait_manager.command_to_motors(heading_angle=-0.8)
-        self.gait_manager.command_to_motors(heading_angle=-1.4)
+        self.gait_manager.command_to_motors(heading_angle=0)
 
 
     def detect_sonar(self):
