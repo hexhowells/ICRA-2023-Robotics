@@ -128,7 +128,7 @@ class HexBot (Robot):
             t = self.getTime()
             self.gait_manager.update_theta()
 
-            if 0.3 < t < self.start_time:
+            if t < self.start_time:
                 #pass
                 self.start_sequence()
             elif t > self.start_time:
