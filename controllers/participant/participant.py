@@ -133,8 +133,11 @@ class HexBot (Robot):
             t = self.getTime()
             self.gait_manager.update_theta()
 
-            if t > 90:
-                self.edge_dist = 60
+            if t > 60:
+                self.edge_dist = 50
+
+            if t > 120:
+                self.edge_dist = 40
 
             if t < self.start_time:
                 #pass
@@ -182,7 +185,8 @@ class HexBot (Robot):
 
     def start_sequence(self):
         """At the beginning of the match, the robot walks forwards to move away from the edges."""
-        self.gait_manager.command_to_motors(heading_angle=-1.4)
+        #self.gait_manager.command_to_motors(desired_radius=-1, heading_angle=-1.4)
+        self.gait_manager.command_to_motors(desired_radius=-0.3, heading_angle=0.7)
         #self.gait_manager.command_to_motors(heading_angle=0)
 
 

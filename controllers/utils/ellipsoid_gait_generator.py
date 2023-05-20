@@ -26,7 +26,7 @@ from .pose_estimator import PoseEstimator
 
 
 class EllipsoidGaitGenerator():
-    MAX_STEP_LENGTH_FRONT = 0.020
+    MAX_STEP_LENGTH_FRONT = 0.015
     MAX_STEP_LENGTH_SIDE = 0.016
     MIN_Z = -0.327
 
