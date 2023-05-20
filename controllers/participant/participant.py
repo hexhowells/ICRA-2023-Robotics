@@ -67,13 +67,13 @@ class HexBot (Robot):
 
 
     def light_it_up_contest(self):
-        self.getDevice('ChestBoard/Led').set(-1)
-        self.getDevice('Face/Led/Left').set(-1)
-        self.getDevice('Face/Led/Right').set(-1)
-        self.getDevice('Ears/Led/Right').set(-1)
-        self.getDevice('Ears/Led/Right').set(-1)
-        self.getDevice('LFoot/Led').set(-1)
-        self.getDevice('RFoot/Led').set(-1)
+        self.getDevice('ChestBoard/Led').set(0x8007D4)
+        self.getDevice('Face/Led/Left').set(0x8007D4)
+        self.getDevice('Face/Led/Right').set(0x8007D4)
+        self.getDevice('Ears/Led/Left').set(0x8007D4)
+        self.getDevice('Ears/Led/Right').set(0x8007D4)
+        self.getDevice('LFoot/Led').set(0x8007D4)
+        self.getDevice('RFoot/Led').set(0x8007D4)
 
 
     def position_arms(self):
