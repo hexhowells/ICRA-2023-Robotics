@@ -20,6 +20,9 @@ from controller import Robot, Motion
 
 class Wrestler (Robot):
     def run(self):
+        LAnklePitch = self.getDevice('LAnklePitch')
+        RAnklePitch = self.getDevice('RAnklePitch')
+
         motion = Motion('../motions/HandWave.motion')  # look into this text file, it's easy to understand
         motion.setLoop(True)
         motion.play()
