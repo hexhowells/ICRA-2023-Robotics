@@ -77,8 +77,8 @@ class HexBot (Robot):
 
 
     def position_arms(self):
-        self.RShoulderPitch.setPosition(0.6)
-        self.LShoulderPitch.setPosition(0.6)
+        self.RShoulderPitch.setPosition(0.9)
+        self.LShoulderPitch.setPosition(0.9)
         
         self.RElbowYaw.setPosition(1.5)
         self.LElbowYaw.setPosition(-1.5)
