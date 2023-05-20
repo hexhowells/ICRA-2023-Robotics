@@ -42,7 +42,7 @@ class HexBot (Robot):
         
         self.last_time = 0
 
-        self.start_time = 1.5
+        self.start_time = 2
 
         self.LHipPitch = self.getDevice('LHipPitch')
         self.RHipPitch = self.getDevice('RHipPitch')
@@ -92,13 +92,16 @@ class HexBot (Robot):
     def attack(self):
         t = self.getTime()
 
-        if (t - self.last_time) > 0.8:
+        if (t - self.last_time) > 0.4:
             self.RShoulderPitch.setPosition(0)
             self.LShoulderPitch.setPosition(0)
+
+            self.RElbowRoll.setPosition(0.2)
+            self.LElbowRoll.setPosition(-0.2)
         else:
             self.position_arms()
             
-        if (t - self.last_time) > 1:
+        if (t - self.last_time) > 0.5:
             self.last_time = t
         
         
@@ -173,7 +176,7 @@ class HexBot (Robot):
 
     def start_sequence(self):
         """At the beginning of the match, the robot walks forwards to move away from the edges."""
-        self.gait_manager.command_to_motors(heading_angle=0)
+        self.gait_manager.command_to_motors(heading_angle=-0.8)
 
 
     def detect_sonar(self):
