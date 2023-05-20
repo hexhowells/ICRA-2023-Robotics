@@ -130,15 +130,21 @@ class HexBot (Robot):
                 #pass
                 self.start_sequence()
             elif t > 1.5:
-                self.fall_detector.check()
-                self.position_arms()
+                fell_over = self.fall_detector.check()
+                if fell_over:
+                    self.position_arms()
+                    self.step(100)
+
                 self.attack()
 
                 edge = self.detect_line()
                 if edge:
+                    #print("RIGHT")
                     self.gait_manager.command_to_motors(desired_radius=0.1, heading_angle=0)
                 else:
-                    self.walk()
+                    #print("FORWARD")
+                    self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
+                    #self.walk()
 
 
     def detect_line(self):
