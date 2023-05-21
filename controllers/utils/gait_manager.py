@@ -102,7 +102,6 @@ class GaitManager():
         and a desired heading angle (in radians. 0 is straight on, > 0 is turning left).
         Send the commands to the motors.
         """
-
         # Move right leg
         if not desired_radius: desired_radius = 1e3
 
@@ -137,7 +136,6 @@ class GaitManager():
         if (sum(self.corr_tracker.values) == self.corr_tracker.n) and diff < 0.01:
             #x, y, z, yaw = (-0.013116045384055327, 0.0599999075163715, -0.3198323535116744, 1.4102364776525524e-05)
             print("Oscillations detected!")
-            print(diff)
             if self.rz_tracker.correlation() == 1:
                 z = z - 0.1
             else:
