@@ -43,6 +43,7 @@ class HexBot (Robot):
         self.last_time = 0
         self.start_time = 4
         self.edge_dist = 100
+        self.direction = -1#random.choice([1, -1])
 
         self.LHipPitch = self.getDevice('LHipPitch')
         self.RHipPitch = self.getDevice('RHipPitch')
@@ -145,7 +146,7 @@ class HexBot (Robot):
                 self.edge_dist = 40
 
             if 175 > t > 173:
-                self.gait_manager.command_to_motors(desired_radius=-0.1, heading_angle=0)
+                self.gait_manager.command_to_motors(desired_radius=self.direction*-0.1, heading_angle=0)
                 continue
             if t > 175:  # Last ditch effort to gain some movement points
                 self.flip()
@@ -164,7 +165,7 @@ class HexBot (Robot):
 
                 edge = self.detect_line()
                 if edge:
-                    self.gait_manager.command_to_motors(desired_radius=0.1, heading_angle=0)
+                    self.gait_manager.command_to_motors(desired_radius=self.direction*0.1, heading_angle=0)
                 else:
                     self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
                     #self.walk()
@@ -196,7 +197,7 @@ class HexBot (Robot):
     def start_sequence(self):
         """At the beginning of the match, the robot walks forwards to move away from the edges."""
         #self.gait_manager.command_to_motors(desired_radius=-1, heading_angle=-1.4)
-        self.gait_manager.command_to_motors(desired_radius=-0.3, heading_angle=0.7)
+        self.gait_manager.command_to_motors(desired_radius=self.direction*-0.3, heading_angle=self.direction*0.7)
         #self.gait_manager.command_to_motors(heading_angle=0)
 
 

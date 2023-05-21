@@ -156,8 +156,3 @@ class GaitManager():
         #print(f'Average: R:{self.rz_tracker.average():.5f} L:{self.lz_tracker.average():.5f}')
         #print(f'Variance: R:{self.rz_tracker.variance():.5f} L:{self.lz_tracker.variance():.5f}')
         #print(f'Correlation: R:{self.rz_tracker.correlation():.5f} L:{self.lz_tracker.correlation():.5f}\n\n')
-
-
-    def reset_accel(self):
-        for _ in range(15):
-            self.gait_generator.update_accel()

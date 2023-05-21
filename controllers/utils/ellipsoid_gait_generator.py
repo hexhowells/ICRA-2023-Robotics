@@ -117,10 +117,6 @@ class EllipsoidGaitGenerator():
         self.step_length_front = self.MAX_STEP_LENGTH_FRONT * amount
         self.step_length_side = self.MAX_STEP_LENGTH_SIDE * amount
 
-
-    def update_accel(self):
-        self.pose_estimator.accelerometer.update_average()
-
     @staticmethod
     def rotate(x, y, angle):
         '''Rotate a point by a given angle.'''
