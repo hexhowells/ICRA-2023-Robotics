@@ -176,6 +176,8 @@ class Kinematics:
         global left_leg_previous_joints
         global right_leg_previous_joints
 
+        z = max(z, -330)
+
         # This does all the maths from the paper step-by-step (look at the paper if you are interested)
         T = self.position_and_orientation_to_transform([x, y, z], [yaw, pitch, roll])
         A_base_0 = self.get_A_base_0(is_left)
