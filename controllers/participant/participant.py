@@ -30,16 +30,20 @@ class HexBot (Robot):
         self.counter = 0
         self.opponent_x = [0]*10
 
+        # used for detecting the edge of the ring
         self.floor_model = Floor(threshold=10, img_step=5, img_size=(160, 120))
 
+        # enable distance sensors
         self.sonarL = self.getDevice('Sonar/Left')
         self.sonarL.enable(1)
         self.sonarR = self.getDevice('Sonar/Right')
         self.sonarR.enable(1)
 
+        # set head position
         self.head = self.getDevice('HeadPitch')
         self.head.setPosition(0.25)
         
+        # set variables
         self.last_time = 0
         self.start_time = 4
         self.edge_dist = 100
@@ -47,6 +51,7 @@ class HexBot (Robot):
         self.attack_freq = 2
         self.attack_len = 0.2
 
+        # get all joint devices required
         self.LHipPitch = self.getDevice('LHipPitch')
         self.RHipPitch = self.getDevice('RHipPitch')
 
@@ -72,6 +77,7 @@ class HexBot (Robot):
 
 
     def light_it_up_contest(self):
+        """Activate LEDs on the robot"""
         self.getDevice('ChestBoard/Led').set(0x8007D4)
         self.getDevice('Face/Led/Left').set(0x8007D4)
         self.getDevice('Face/Led/Right').set(0x8007D4)
@@ -82,6 +88,7 @@ class HexBot (Robot):
 
 
     def position_arms(self):
+        """Position the arms to their default value"""
         self.RShoulderPitch.setPosition(0.9)
         self.LShoulderPitch.setPosition(0.9)
 
@@ -96,6 +103,7 @@ class HexBot (Robot):
 
         
     def attack(self):
+        """Swing arms to attempt to attack the opponent"""
         t = self.getTime()
 
         if (t - self.last_time) > self.attack_freq:
@@ -118,6 +126,7 @@ class HexBot (Robot):
         
         
     def flip(self):
+        """Dive forward and flip over"""
         self.RShoulderPitch.setPosition(0.55)
         self.LShoulderPitch.setPosition(0.55)
 
@@ -144,6 +153,7 @@ class HexBot (Robot):
 
         
     def run(self):
+        """Start the controller"""
         self.position_arms()
 
         while self.step(self.time_step) != -1:
@@ -184,6 +194,7 @@ class HexBot (Robot):
 
 
     def detect_line(self):
+        """Detect the edge of the ring via its distinctive red border"""
         # Load the image
         img = self.cameraBottom.get_image()
         top_img = self.camera.get_image()
@@ -219,6 +230,7 @@ class HexBot (Robot):
 
 
     def update_opponent_x(self, img):
+        """Get the moving average of the opponents x location"""
          x_pos = self._get_normalized_opponent_x(img)  # -0.1 and 0.1 is basically facing the opponent
          self.opponent_x.append(x_pos)
          self.opponent_x.pop(0)
@@ -227,6 +239,7 @@ class HexBot (Robot):
 
 
     def calculate_variance(self, arr):
+        """Calculate the variance of an array"""
         n = len(arr)
         mean = sum(arr) / n
         variance = sum((x - mean) ** 2 for x in arr) / n
@@ -242,6 +255,7 @@ class HexBot (Robot):
 
 
     def walk(self): 
+        """Main rountine for tracking the opponent and updating the bots direction accordingly"""
         img = self.camera.get_image()
 
         x_pos = self.update_opponent_x(img)
