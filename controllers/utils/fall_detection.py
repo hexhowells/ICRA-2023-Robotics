@@ -52,6 +52,9 @@ class FallDetection:
                 self.fsm.execute_action()
                 self.robot.step(self.time_step)
                 self.detect_fall()
+            return True
+        else:
+            return False
 
     def detect_fall(self):
         '''Detect a fall from the accelerometer and update the FSM state.'''

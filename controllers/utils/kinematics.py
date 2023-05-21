@@ -244,7 +244,7 @@ class Kinematics:
         if len(combinations) == 0 or len(combinations[0]) != 6:
             print(f'WARNING: Incomputable desired end point position for the {"left" if is_left else "right"} leg:')
             print(f'x: {x}, y: {y}, z: {z}, roll: {roll}, pitch: {pitch}, yaw: {yaw}')
-            best_solution = left_leg_previous_joints if is_left else right_leg_previous_joints
+            best_solution = self.left_leg_previous_joints if is_left else self.right_leg_previous_joints
         elif len(combinations) != 1:
             print('Number of combination different than one:', combinations)
             # compute the distance between the different combinations and the previous joints and return the closest one
@@ -252,7 +252,7 @@ class Kinematics:
             best_index = -1
             for i, combination in enumerate(combinations):
                 distance = np.linalg.norm(
-                    np.array(left_leg_previous_joints if is_left else right_leg_previous_joints) - np.array(combination))
+                    np.array(self.left_leg_previous_joints if is_left else self.right_leg_previous_joints) - np.array(combination))
                 if distance < shortest_distance:
                     shortest_distance = distance
                     best_index = i
@@ -260,8 +260,8 @@ class Kinematics:
         else:
             best_solution = combinations[0]
         if is_left:
-            left_leg_previous_joints = best_solution
+            self.left_leg_previous_joints = best_solution
         else:
-            right_leg_previous_joints = best_solution
+            self.right_leg_previous_joints = best_solution
         theta_6, theta_4, theta_5, theta_2, theta_3, theta_1 = best_solution
         return theta_1, theta_2, theta_3, theta_4, theta_5, theta_6
