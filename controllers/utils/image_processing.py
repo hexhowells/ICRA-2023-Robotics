@@ -53,7 +53,7 @@ class ImageProcessing():
         blur = cv2.GaussianBlur(laplacian, (0, 0), 2)
         # we apply a threshold to get a binary image of potential robot locations
         gray = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
-        _, thresh = cv2.threshold(gray, 80, 255, cv2.THRESH_BINARY)
+        _, thresh = cv2.threshold(gray, 110, 255, cv2.THRESH_BINARY)
         # the binary image is then dilated to merge small groups of blobs together
         closing = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_RECT, (15, 15)))
         # the robot is assumed to be the largest contour

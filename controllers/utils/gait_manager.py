@@ -135,11 +135,11 @@ class GaitManager():
 
         if sum(self.corr_tracker.values) == 3:
             #x, y, z, yaw = (-0.013116045384055327, 0.0599999075163715, -0.3198323535116744, 1.4102364776525524e-05)
-            #print("Oscillations detected!")
+            print("Oscillations detected!")
             if self.rz_tracker.correlation() == 1:
-                z = z - 0.02
+                z = z - 0.18
             else:
-                z = z + 0.02
+                z = z + 0.18
             x = x * -1
             
 

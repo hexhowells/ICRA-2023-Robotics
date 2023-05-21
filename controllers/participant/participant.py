@@ -177,8 +177,8 @@ class HexBot (Robot):
                 if edge:
                     self.gait_manager.command_to_motors(desired_radius=self.direction*0.1, heading_angle=0)
                 else:
-                    self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
-                    #self.walk()
+                    #self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
+                    self.walk()
 
 
     def detect_line(self):
@@ -243,6 +243,7 @@ class HexBot (Robot):
         img = self.camera.get_image()
 
         x_pos = self.update_opponent_x(img)
+        #print(x_pos)
 
         if (-0.4 < x_pos < 0.4) or self.hallucinating(): # forward
             self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
