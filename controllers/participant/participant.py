@@ -87,8 +87,8 @@ class HexBot (Robot):
         self.LElbowYaw.setPosition(-1.5)
         
         self.RElbowRoll.setPosition(0)
-        self.LElbowRoll.setPosition(-0)
-        
+        self.LElbowRoll.setPosition(0)
+
         
     def attack(self):
         t = self.getTime()
@@ -99,6 +99,7 @@ class HexBot (Robot):
 
             self.RElbowRoll.setPosition(0.4)
             self.LElbowRoll.setPosition(-0.4)
+            
             self.step(10)
         else:
             self.position_arms()
