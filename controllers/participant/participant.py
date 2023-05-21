@@ -161,25 +161,28 @@ class HexBot (Robot):
             t = self.getTime()
             self.gait_manager.update_theta()
 
+            # move closer to the edge after 1 minute
             if t > 60:
                 self.edge_dist = 50
 
+            # move even closer to the edge after 2 minutes
             if t > 120:
                 self.edge_dist = 40
 
+            # start moving towards the edge of the ring for the final flip
             if 175 > t > 173:
                 self.gait_manager.command_to_motors(desired_radius=self.direction*-0.1, heading_angle=0)
                 continue
             if t > 175:  # Last ditch effort to gain some movement points
                 self.flip()
 
+            # turn at the start of the round
             if t < self.start_time:
-                #pass
                 self.start_sequence()
             elif t > self.start_time:
                 fallen = self.fall_detector.check()
 
-                if fallen:
+                if fallen:  # reset positions after a fall
                     self.position_arms()
                     self.step(200)
 
@@ -231,11 +234,11 @@ class HexBot (Robot):
 
     def update_opponent_x(self, img):
         """Get the moving average of the opponents x location"""
-         x_pos = self._get_normalized_opponent_x(img)  # -0.1 and 0.1 is basically facing the opponent
-         self.opponent_x.append(x_pos)
-         self.opponent_x.pop(0)
+        x_pos = self._get_normalized_opponent_x(img)  # -0.1 and 0.1 is basically facing the opponent
+        self.opponent_x.append(x_pos)
+        self.opponent_x.pop(0)
 
-         return sum(self.opponent_x) / 10
+        return sum(self.opponent_x) / 10
 
 
     def calculate_variance(self, arr):
@@ -259,7 +262,6 @@ class HexBot (Robot):
         img = self.camera.get_image()
 
         x_pos = self.update_opponent_x(img)
-        #print(x_pos)
 
         if (-0.36 < x_pos < 0.36) or self.hallucinating(): # forward
             self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
