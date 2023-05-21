@@ -144,6 +144,9 @@ class HexBot (Robot):
             if t > 120:
                 self.edge_dist = 40
 
+            if 175 > t > 173:
+                self.gait_manager.command_to_motors(desired_radius=-0.1, heading_angle=0)
+                continue
             if t > 175:  # Last ditch effort to gain some movement points
                 self.flip()
 
@@ -151,12 +154,11 @@ class HexBot (Robot):
                 #pass
                 self.start_sequence()
             elif t > self.start_time:
-                fell_over = self.fall_detector.check()
+                fallen = self.fall_detector.check()
 
-                if fell_over:
+                if fallen:
                     self.position_arms()
-                    gait_manager.update_accel()
-                    self.step(100)
+                    self.step(200)
 
                 self.attack()
 
