@@ -85,15 +85,9 @@ class HexBot (Robot):
         
         self.RElbowYaw.setPosition(1.5)
         self.LElbowYaw.setPosition(-1.5)
-
-        self.RShoulderRoll.setPosition(0)
-        self.LShoulderRoll.setPosition(0)
-
-        self.RElbowRoll.setPosition(0.5)
-        self.LElbowRoll.setPosition(-0.5)
         
-        self.RElbowYaw.setPosition(0)
-        self.LElbowYaw.setPosition(0)
+        #self.RElbowRoll.setPosition(0.8)
+        #self.LElbowRoll.setPosition(-0.8)
         
         
     def attack(self):
@@ -103,12 +97,8 @@ class HexBot (Robot):
             self.RShoulderPitch.setPosition(0.2)
             self.LShoulderPitch.setPosition(0.2)
 
-            self.RShoulderRoll.setPosition(-0.2)
-            self.LShoulderRoll.setPosition(0.2)
-
-            self.RElbowYaw.setPosition(2)
-            self.LElbowYaw.setPosition(-2)
-            self.step(10)
+            #self.RElbowRoll.setPosition(0.2)
+            #self.LElbowRoll.setPosition(-0.2)
         else:
             self.position_arms()
             
@@ -245,7 +235,7 @@ class HexBot (Robot):
         x_pos = self.update_opponent_x(img)
         #print(x_pos)
 
-        if (-0.4 < x_pos < 0.4) or self.hallucinating(): # forward
+        if (-0.36 < x_pos < 0.36) or self.hallucinating(): # forward
             self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
         elif x_pos > 0: # right
             self.gait_manager.command_to_motors(desired_radius=0.1, heading_angle=1)

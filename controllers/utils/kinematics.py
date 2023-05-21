@@ -176,7 +176,7 @@ class Kinematics:
         global left_leg_previous_joints
         global right_leg_previous_joints
 
-        z = max(z, -325)
+        z = max(-330, min(z, -290))
         y = min(y, 91.5)
 
         # This does all the maths from the paper step-by-step (look at the paper if you are interested)

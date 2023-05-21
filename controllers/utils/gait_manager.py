@@ -91,7 +91,7 @@ class GaitManager():
 
         self.rz_tracker = DataTracker(10)
         self.lz_tracker = DataTracker(10)
-        self.corr_tracker = DataTracker(3)
+        self.corr_tracker = DataTracker(5)
 
     def update_theta(self):
         self.gait_generator.update_theta()
@@ -130,16 +130,16 @@ class GaitManager():
         x, y, z, yaw = self.gait_generator.compute_leg_position(
             is_left=True, desired_radius=desired_radius, heading_angle=heading_angle)
         #print(f'[{x, y, z, yaw}]')
-        z = min(z, -0.28)
-        z = max(z, -0.33)
+        #z = min(z, -0.28)
+        #z = max(z, -0.33)
 
-        if sum(self.corr_tracker.values) == 3:
+        if sum(self.corr_tracker.values) == self.corr_tracker.n:
             #x, y, z, yaw = (-0.013116045384055327, 0.0599999075163715, -0.3198323535116744, 1.4102364776525524e-05)
             print("Oscillations detected!")
             if self.rz_tracker.correlation() == 1:
-                z = z - 0.18
+                z = z - 0.19
             else:
-                z = z + 0.18
+                z = z + 0.19
             x = x * -1
             
 
