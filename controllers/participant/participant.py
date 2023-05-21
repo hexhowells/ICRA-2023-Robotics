@@ -104,7 +104,7 @@ class HexBot (Robot):
         else:
             self.position_arms()
             
-        if (t - self.last_time) > 0.7:
+        if (t - self.last_time) > 0.8:
             self.last_time = t
         
         

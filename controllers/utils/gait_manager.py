@@ -22,7 +22,7 @@ import numpy as np
 class DataTracker:
     def __init__(self, n):
         self.n = n
-        self.values = []
+        self.values = [0]
 
     def update(self, value):
         self.values.append(value)
@@ -91,7 +91,7 @@ class GaitManager():
 
         self.rz_tracker = DataTracker(10)
         self.lz_tracker = DataTracker(10)
-        self.corr_tracker = DataTracker(4)
+        self.corr_tracker = DataTracker(5)
 
     def update_theta(self):
         self.gait_generator.update_theta()
@@ -132,14 +132,16 @@ class GaitManager():
         #print(f'[{x, y, z, yaw}]')
         #z = min(z, -0.28)
         #z = max(z, -0.33)
-
-        if sum(self.corr_tracker.values) == self.corr_tracker.n:
+        diff = abs(self.rz_tracker.values[-1] - self.lz_tracker.values[-1])
+        #print(diff, (sum(self.corr_tracker.values) == self.corr_tracker.n))
+        if (sum(self.corr_tracker.values) == self.corr_tracker.n) and diff < 0.01:
             #x, y, z, yaw = (-0.013116045384055327, 0.0599999075163715, -0.3198323535116744, 1.4102364776525524e-05)
             print("Oscillations detected!")
+            print(diff)
             if self.rz_tracker.correlation() == 1:
-                z = z - 0.19
+                z = z - 0.1
             else:
-                z = z + 0.19
+                z = z + 0.1
             x = x * -1
             
 
@@ -152,7 +154,7 @@ class GaitManager():
 
         #self.writer1.writerow([z])
 
-        #print(f'Values: R:{self.rz_tracker.values[-1]:.5f} L:{self.lz_tracker.values[-1]:.5f}')
+        print(f'Values: R:{self.rz_tracker.values[-1]:.5f} L:{self.lz_tracker.values[-1]:.5f}')
         #print(f'Average: R:{self.rz_tracker.average():.5f} L:{self.lz_tracker.average():.5f}')
         #print(f'Variance: R:{self.rz_tracker.variance():.5f} L:{self.lz_tracker.variance():.5f}')
         #print(f'Correlation: R:{self.rz_tracker.correlation():.5f} L:{self.lz_tracker.correlation():.5f}\n\n')

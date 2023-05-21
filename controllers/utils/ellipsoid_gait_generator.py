@@ -26,7 +26,7 @@ from .pose_estimator import PoseEstimator
 
 
 class EllipsoidGaitGenerator():
-    MAX_STEP_LENGTH_FRONT = 0.018
+    MAX_STEP_LENGTH_FRONT = 0.015
     MAX_STEP_LENGTH_SIDE = 0.016
     MIN_Z = -0.327
 
@@ -50,7 +50,7 @@ class EllipsoidGaitGenerator():
         self.step_length_front = self.MAX_STEP_LENGTH_FRONT  # when heading in the front direction (x axis)
         self.step_length_side = self.MAX_STEP_LENGTH_SIDE  # when heading in the side direction (y axis)
         self.in_place_step_length = 0.02  # when turning in place
-        self.step_height = 0.01 # 0.04  # height of the ellipsoid path
+        self.step_height = 0.001 # 0.04  # height of the ellipsoid path
         self.step_penetration = 0.005 # 0.005  # depth of the ellipsoid path
         # turning radii are bigger than desired in simulation so we multiply by this factor:
         self.radius_calibration = 0.93
