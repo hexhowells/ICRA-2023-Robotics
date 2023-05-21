@@ -176,7 +176,8 @@ class Kinematics:
         global left_leg_previous_joints
         global right_leg_previous_joints
 
-        z = max(z, -330)
+        z = max(z, -325)
+        y = min(y, 91.5)
 
         # This does all the maths from the paper step-by-step (look at the paper if you are interested)
         T = self.position_and_orientation_to_transform([x, y, z], [yaw, pitch, roll])
@@ -266,4 +267,5 @@ class Kinematics:
         else:
             self.right_leg_previous_joints = best_solution
         theta_6, theta_4, theta_5, theta_2, theta_3, theta_1 = best_solution
+        #print(f'x: {x}, y: {y}, z: {z}, roll: {roll}, pitch: {pitch}, yaw: {yaw}')
         return theta_1, theta_2, theta_3, theta_4, theta_5, theta_6

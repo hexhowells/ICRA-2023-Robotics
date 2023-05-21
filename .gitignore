@@ -5,3 +5,4 @@
 *.json
 opponent
 inference.py
+participant_backup.py

@@ -85,9 +85,15 @@ class HexBot (Robot):
         
         self.RElbowYaw.setPosition(1.5)
         self.LElbowYaw.setPosition(-1.5)
+
+        self.RShoulderRoll.setPosition(0)
+        self.LShoulderRoll.setPosition(0)
+
+        self.RElbowRoll.setPosition(0.5)
+        self.LElbowRoll.setPosition(-0.5)
         
-        #self.RElbowRoll.setPosition(0.8)
-        #self.LElbowRoll.setPosition(-0.8)
+        self.RElbowYaw.setPosition(0)
+        self.LElbowYaw.setPosition(0)
         
         
     def attack(self):
@@ -97,8 +103,12 @@ class HexBot (Robot):
             self.RShoulderPitch.setPosition(0.2)
             self.LShoulderPitch.setPosition(0.2)
 
-            #self.RElbowRoll.setPosition(0.2)
-            #self.LElbowRoll.setPosition(-0.2)
+            self.RShoulderRoll.setPosition(-0.2)
+            self.LShoulderRoll.setPosition(0.2)
+
+            self.RElbowYaw.setPosition(2)
+            self.LElbowYaw.setPosition(-2)
+            self.step(10)
         else:
             self.position_arms()
             
@@ -167,8 +177,8 @@ class HexBot (Robot):
                 if edge:
                     self.gait_manager.command_to_motors(desired_radius=self.direction*0.1, heading_angle=0)
                 else:
-                    #self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
-                    self.walk()
+                    self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
+                    #self.walk()
 
 
     def detect_line(self):
