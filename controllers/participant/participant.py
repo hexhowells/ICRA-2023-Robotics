@@ -44,6 +44,8 @@ class HexBot (Robot):
         self.start_time = 4
         self.edge_dist = 100
         self.direction = random.choice([1, -1])
+        self.attack_freq = 2
+        self.attack_len = 0.2
 
         self.LHipPitch = self.getDevice('LHipPitch')
         self.RHipPitch = self.getDevice('RHipPitch')
@@ -93,7 +95,7 @@ class HexBot (Robot):
     def attack(self):
         t = self.getTime()
 
-        if (t - self.last_time) > 0.6:
+        if (t - self.last_time) > self.attack_freq:
             self.RShoulderPitch.setPosition(0.2)
             self.LShoulderPitch.setPosition(0.2)
 
@@ -104,7 +106,7 @@ class HexBot (Robot):
         else:
             self.position_arms()
             
-        if (t - self.last_time) > 0.8:
+        if (t - self.last_time) > self.attack_freq + self.attack_len:
             self.last_time = t
         
         
