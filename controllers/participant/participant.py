@@ -118,19 +118,21 @@ class HexBot (Robot):
         
         
     def flip(self):
-        self.RShoulderPitch.setPosition(0.4)
-        self.LShoulderPitch.setPosition(0.4)
+        self.RShoulderPitch.setPosition(0.55)
+        self.LShoulderPitch.setPosition(0.55)
 
         self.step(200)
+
+        self.LAnklePitch.setPosition(-0.5)
+        self.RAnklePitch.setPosition(-0.5)
+
+        self.step(300)
 
         self.LHipPitch.setPosition(-1)
         self.RHipPitch.setPosition(-1)
 
         self.LKneePitch.setPosition(0)
         self.RKneePitch.setPosition(0)
-
-        self.LAnklePitch.setPosition(-0.5)
-        self.RAnklePitch.setPosition(-0.5)
 
         self.step(500)
 

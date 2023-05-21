@@ -27,7 +27,7 @@ from .pose_estimator import PoseEstimator
 
 class EllipsoidGaitGenerator():
     MAX_STEP_LENGTH_FRONT = 0.015
-    MAX_STEP_LENGTH_SIDE = 0.016
+    MAX_STEP_LENGTH_SIDE = 0.010
     MIN_Z = -0.327
 
     def __init__(self, robot, time_step):
@@ -95,7 +95,8 @@ class EllipsoidGaitGenerator():
         # extensor response: pushes on the leg when it is on the ground
         force_values = self.left_foot_sensor.getValues() if is_left else self.right_foot_sensor.getValues()
         force_magnitude = np.linalg.norm(np.array([force_values[0], force_values[1], force_values[2]]))
-        if force_magnitude > 5:
+        #print(force_magnitude)
+        if force_magnitude > 20:
             amplitude_z += self.force_reflex_factor * force_magnitude
         z = factor * amplitude_z * np.sin(self.theta) - self.robot_height_offset
         # we clip the z value to avoid infeasible positions
