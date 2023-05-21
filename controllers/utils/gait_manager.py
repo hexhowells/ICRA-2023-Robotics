@@ -91,7 +91,7 @@ class GaitManager():
 
         self.rz_tracker = DataTracker(10)
         self.lz_tracker = DataTracker(10)
-        self.corr_tracker = DataTracker(5)
+        self.corr_tracker = DataTracker(4)
 
     def update_theta(self):
         self.gait_generator.update_theta()
