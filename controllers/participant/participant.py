@@ -99,8 +99,8 @@ class HexBot (Robot):
         t = self.getTime()
 
         if (t - self.last_time) > self.attack_freq:
-            self.RShoulderPitch.setPosition(0.2)
-            self.LShoulderPitch.setPosition(0.2)
+            self.RShoulderPitch.setPosition(0.1)
+            self.LShoulderPitch.setPosition(0.1)
 
             self.RShoulderRoll.setPosition(0.2)
             self.LShoulderRoll.setPosition(-0.2)
