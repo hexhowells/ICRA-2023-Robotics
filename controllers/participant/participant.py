@@ -167,8 +167,8 @@ class HexBot (Robot):
                 if edge:
                     self.gait_manager.command_to_motors(desired_radius=self.direction*0.1, heading_angle=0)
                 else:
-                    self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
-                    #self.walk()
+                    #self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
+                    self.walk()
 
 
     def detect_line(self):
@@ -226,7 +226,7 @@ class HexBot (Robot):
         # do we think we see the opponent when we actually dont?
         # issue with the given _get_normalised_opponent_x function
         var = self.calculate_variance(self.opponent_x)
-        return var > 0.25
+        return var > 0.30
 
 
     def walk(self): 
