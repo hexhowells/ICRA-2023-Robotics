@@ -43,7 +43,7 @@ class HexBot (Robot):
         self.last_time = 0
         self.start_time = 4
         self.edge_dist = 100
-        self.direction = -1#random.choice([1, -1])
+        self.direction = random.choice([1, -1])
 
         self.LHipPitch = self.getDevice('LHipPitch')
         self.RHipPitch = self.getDevice('RHipPitch')
