@@ -86,8 +86,8 @@ class HexBot (Robot):
         self.RElbowYaw.setPosition(1.5)
         self.LElbowYaw.setPosition(-1.5)
         
-        #self.RElbowRoll.setPosition(0.8)
-        #self.LElbowRoll.setPosition(-0.8)
+        self.RElbowRoll.setPosition(0)
+        self.LElbowRoll.setPosition(-0)
         
         
     def attack(self):
@@ -97,8 +97,9 @@ class HexBot (Robot):
             self.RShoulderPitch.setPosition(0.2)
             self.LShoulderPitch.setPosition(0.2)
 
-            #self.RElbowRoll.setPosition(0.2)
-            #self.LElbowRoll.setPosition(-0.2)
+            self.RElbowRoll.setPosition(0.4)
+            self.LElbowRoll.setPosition(-0.4)
+            self.step(10)
         else:
             self.position_arms()
             
@@ -165,7 +166,7 @@ class HexBot (Robot):
 
                 edge = self.detect_line()
                 if edge:
-                    self.gait_manager.command_to_motors(desired_radius=self.direction*0.1, heading_angle=0)
+                    self.gait_manager.command_to_motors(desired_radius=self.direction*0.1, heading_angle=self.direction*0.7)
                 else:
                     #self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
                     self.walk()
