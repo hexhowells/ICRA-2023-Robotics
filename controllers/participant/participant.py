@@ -93,7 +93,7 @@ class HexBot (Robot):
     def attack(self):
         t = self.getTime()
 
-        if (t - self.last_time) > 0.4:
+        if (t - self.last_time) > 0.6:
             self.RShoulderPitch.setPosition(0.2)
             self.LShoulderPitch.setPosition(0.2)
 
@@ -104,7 +104,7 @@ class HexBot (Robot):
         else:
             self.position_arms()
             
-        if (t - self.last_time) > 0.5:
+        if (t - self.last_time) > 0.7:
             self.last_time = t
         
         
