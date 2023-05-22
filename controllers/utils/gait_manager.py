@@ -20,6 +20,7 @@ import numpy as np
 
 
 class DataTracker:
+    """Used to track historical data in a circular buffer for analysis"""
     def __init__(self, n):
         self.n = n
         self.values = [0]
