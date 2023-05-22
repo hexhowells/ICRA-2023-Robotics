@@ -9,7 +9,6 @@ from utils.camera import Camera
 from utils.running_average import RunningAverage
 
 import cv2
-import numpy as np
 import random
 import time
 
