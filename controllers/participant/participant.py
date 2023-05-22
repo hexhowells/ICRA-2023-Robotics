@@ -133,8 +133,8 @@ class HexBot (Robot):
         
     def flip(self):
         """Dive forward and flip over"""
-        self.RShoulderPitch.setPosition(0.55)
-        self.LShoulderPitch.setPosition(0.55)
+        self.RShoulderPitch.setPosition(0.6)
+        self.LShoulderPitch.setPosition(0.6)
 
         self.step(200)
 
@@ -177,7 +177,7 @@ class HexBot (Robot):
 
             # start moving towards the edge of the ring for the final flip
             if 175 > t > 173:
-                self.gait_manager.command_to_motors(desired_radius=self.direction*-0.1, heading_angle=0)
+                self.gait_manager.command_to_motors(desired_radius=self.direction*0.1, heading_angle=0)
                 continue
             if t > 175:  # Last ditch effort to gain some movement points
                 self.flip()
