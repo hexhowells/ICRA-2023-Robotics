@@ -179,7 +179,7 @@ class HexBot (Robot):
             # turn at the start of the round
             if t < self.start_time:
                 self.start_sequence()
-            elif t > self.start_time:
+            elif t > self.start_time:  # this code runs most of the time
                 fallen = self.fall_detector.check()
 
                 if fallen:  # reset positions after a fall
