@@ -202,9 +202,6 @@ class HexBot (Robot):
         img = self.cameraBottom.get_image()
         top_img = self.camera.get_image()
 
-        #if random.randint(0, 10) == 1:
-            #cv2.imwrite(f"topImages3/img_{random.randint(0, 10_000)}.png", top_img)
-
         filtered_img = filter_lines(img)
 
         coords = self.floor_model.segment_floor(filtered_img)
