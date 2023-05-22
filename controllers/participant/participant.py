@@ -22,12 +22,12 @@ class HexBot (Robot):
         Robot.__init__(self)
         self.time_step = int(self.getBasicTimeStep())
 
+        # initialise objects
         self.camera = Camera(self)
         self.cameraBottom = Camera(self, camera_name='CameraBottom')
         self.fall_detector = FallDetection(self.time_step, self)
         self.gait_manager = GaitManager(self, self.time_step)
-        self.opponent_x = [0]*10
-
+        
         # used for detecting the edge of the ring
         self.floor_model = Floor(threshold=10, img_step=5, img_size=(160, 120))
 
@@ -42,6 +42,7 @@ class HexBot (Robot):
         self.head.setPosition(0.25)
         
         # set variables
+        self.opponent_x = [0]*10
         self.last_time = 0
         self.start_time = 4
         self.edge_dist = 100
