@@ -52,7 +52,6 @@ class DataTracker:
             diff2 = (self.values[i + 1] - average) * 10000
             total_diff_prod += diff1 * diff2
 
-        #correlation = total_diff_prod / ((len(self.values) - 1) * math.sqrt(self.variance()))
         correlation = np.corrcoef(self.values, range(len(self.values)))[0, 1]
         if correlation > 0:
             return 1
@@ -102,55 +101,55 @@ class GaitManager():
         and a desired heading angle (in radians. 0 is straight on, > 0 is turning left).
         Send the commands to the motors.
         """
+        #
         # Move right leg
+        #
         if not desired_radius: desired_radius = 1e3
 
+        # track the leg's z axis motion to see if they are in phase
         self.corr_tracker.update(int(self.rz_tracker.correlation() == self.lz_tracker.correlation()))
 
         x, y, z, yaw = self.gait_generator.compute_leg_position(
             is_left=False, desired_radius=desired_radius, heading_angle=heading_angle)
 
+        # clip the z values
         z = min(z, -0.28)
         z = max(z, -0.33)
 
-        #if sum(self.corr_tracker.values) == 3:
-            #x, y, z, yaw = (0.014311165485430028, -0.0600001101197227, -0.29294549058807747, -1.5389342845162082e-05)
-
+        # track the computed z as historical data
         self.rz_tracker.update(z)
 
+        # compute joint angles and set actuators
         right_target_commands = self.kinematics.inverse_leg(x * 1e3, y * 1e3, z * 1e3, 0, 0, yaw, is_left=False)
-
         for command, motor in zip(right_target_commands, self.R_leg_motors):
             motor.setPosition(command)
 
-        #self.writer.writerow([z])
 
+        #
         # Move left leg
+        #
         x, y, z, yaw = self.gait_generator.compute_leg_position(
             is_left=True, desired_radius=desired_radius, heading_angle=heading_angle)
-        #print(f'[{x, y, z, yaw}]')
-        #z = min(z, -0.28)
-        #z = max(z, -0.33)
+
+        # track difference in computed leg z values for detecting oscillation
         diff = abs(self.rz_tracker.values[-1] - self.lz_tracker.values[-1])
-        #print(diff, (sum(self.corr_tracker.values) == self.corr_tracker.n))
+
+        # check if the legs are in phase, this causes oscillation and should be avoided/mitigated
         if (sum(self.corr_tracker.values) == self.corr_tracker.n) and diff < 0.01:
-            #x, y, z, yaw = (-0.013116045384055327, 0.0599999075163715, -0.3198323535116744, 1.4102364776525524e-05)
             print("Oscillations detected!")
             if self.rz_tracker.correlation() == 1:
                 z = z - 0.1
             else:
                 z = z + 0.1
-            x = x * -1
+            x = x * -1  # reverse leg's x direction
             
-
+        # track the computed z as historical data
         self.lz_tracker.update(z)
 
+        # compute joint angles and set actuators
         left_target_commands = self.kinematics.inverse_leg(x * 1e3, y * 1e3, z * 1e3, 0, 0, yaw, is_left=True)
-
         for command, motor in zip(left_target_commands, self.L_leg_motors):
             motor.setPosition(command)
-
-        #self.writer1.writerow([z])
 
         #print(f'Values: R:{self.rz_tracker.values[-1]:.5f} L:{self.lz_tracker.values[-1]:.5f}')
         #print(f'{self.corr_tracker.values}')
