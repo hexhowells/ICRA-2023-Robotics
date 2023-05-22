@@ -72,6 +72,9 @@ class HexBot (Robot):
         
         self.RElbowYaw = self.getDevice('RElbowYaw')
         self.LElbowYaw = self.getDevice('LElbowYaw')
+
+        self.RWristYaw = self.getDevice('RWristYaw')
+        self.LWristYaw = self.getDevice('LWristYaw')
         
         self.light_it_up_contest()
 
@@ -100,6 +103,9 @@ class HexBot (Robot):
         
         self.RElbowRoll.setPosition(0)
         self.LElbowRoll.setPosition(0)
+
+        self.RWristYaw.setPosition(-1.5)
+        self.LWristYaw.setPosition(1.5)
 
         
     def attack(self):
