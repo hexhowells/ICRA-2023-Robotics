@@ -26,14 +26,17 @@ class DataTracker:
         self.values = [0]
 
     def update(self, value):
+        """Update the values in the buffer"""
         self.values.append(value)
         if len(self.values) > self.n:
             self.values = self.values[-self.n:]
 
     def average(self):
+        """Get the average of the stored values"""
         return sum(self.values) / len(self.values) if len(self.values) > 0 else 0
 
     def variance(self):
+        """Get the variance of the stored values"""
         if len(self.values) < 2:
             return 0
 
@@ -43,6 +46,7 @@ class DataTracker:
         return variance * 1000
 
     def correlation(self):
+        """Get the correlation of the stored values"""
         if len(self.values) < 2:
             return 0
 
