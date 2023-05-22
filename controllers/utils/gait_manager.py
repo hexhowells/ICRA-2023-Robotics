@@ -152,7 +152,8 @@ class GaitManager():
 
         #self.writer1.writerow([z])
 
-        print(f'Values: R:{self.rz_tracker.values[-1]:.5f} L:{self.lz_tracker.values[-1]:.5f}')
+        #print(f'Values: R:{self.rz_tracker.values[-1]:.5f} L:{self.lz_tracker.values[-1]:.5f}')
+        #print(f'{self.corr_tracker.values}')
         #print(f'Average: R:{self.rz_tracker.average():.5f} L:{self.lz_tracker.average():.5f}')
         #print(f'Variance: R:{self.rz_tracker.variance():.5f} L:{self.lz_tracker.variance():.5f}')
         #print(f'Correlation: R:{self.rz_tracker.correlation():.5f} L:{self.lz_tracker.correlation():.5f}\n\n')

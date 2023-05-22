@@ -190,7 +190,7 @@ class HexBot (Robot):
 
                 if fallen:  # reset positions after a fall
                     self.position_arms()
-                    self.step(200)
+                    self.step(300)
 
                 self.attack()
 
