@@ -83,11 +83,6 @@ class GaitManager():
             position_sensor.enable(time_step)
             self.R_leg_motors.append(motor)
 
-        #self.file = open('right_z.csv', mode='a', newline='')
-        #self.writer = csv.writer(self.file)
-        #self.file1 = open('left_z.csv', mode='a', newline='')
-        #self.writer1 = csv.writer(self.file1)
-
         self.rz_tracker = DataTracker(10)
         self.lz_tracker = DataTracker(10)
         self.corr_tracker = DataTracker(5)
