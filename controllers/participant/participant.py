@@ -16,7 +16,6 @@ from floor import Floor
 from imutils import filter_lines
 
 
-
 class HexBot (Robot):
     def __init__(self):
         Robot.__init__(self)
