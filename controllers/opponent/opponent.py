@@ -6,9 +6,9 @@ from utils.image_processing import ImageProcessing as IP
 from utils.fall_detection import FallDetection
 from utils.gait_manager import GaitManager
 from utils.camera import Camera
+from utils.running_average import RunningAverage
 
 import cv2
-import numpy as np
 import random
 import time
 
@@ -16,18 +16,17 @@ from floor import Floor
 from imutils import filter_lines
 
 
-
 class HexBot (Robot):
     def __init__(self):
         Robot.__init__(self)
         self.time_step = int(self.getBasicTimeStep())
 
+        # initialise objects
         self.camera = Camera(self)
         self.cameraBottom = Camera(self, camera_name='CameraBottom')
         self.fall_detector = FallDetection(self.time_step, self)
         self.gait_manager = GaitManager(self, self.time_step)
-        self.opponent_x = [0]*10
-
+        
         # used for detecting the edge of the ring
         self.floor_model = Floor(threshold=10, img_step=5, img_size=(160, 120))
 
@@ -43,11 +42,12 @@ class HexBot (Robot):
         
         # set variables
         self.last_time = 0
-        self.start_time = 4
+        self.start_time = 1
         self.edge_dist = 100
         self.direction = random.choice([1, -1])
         self.attack_freq = 2
         self.attack_len = 0.2
+        self.opponent_x_history = RunningAverage(dimensions=1, history_steps=5)
 
         # get all joint devices required
         self.LHipPitch = self.getDevice('LHipPitch')
@@ -124,6 +124,7 @@ class HexBot (Robot):
         else:
             self.position_arms()
             
+        # reset timer
         if (t - self.last_time) > self.attack_freq + self.attack_len:
             self.last_time = t
         
@@ -131,8 +132,8 @@ class HexBot (Robot):
         
     def flip(self):
         """Dive forward and flip over"""
-        self.RShoulderPitch.setPosition(0.55)
-        self.LShoulderPitch.setPosition(0.55)
+        self.RShoulderPitch.setPosition(0.6)
+        self.LShoulderPitch.setPosition(0.6)
 
         self.step(200)
 
@@ -175,7 +176,7 @@ class HexBot (Robot):
 
             # start moving towards the edge of the ring for the final flip
             if 175 > t > 173:
-                self.gait_manager.command_to_motors(desired_radius=self.direction*-0.1, heading_angle=0)
+                self.gait_manager.command_to_motors(desired_radius=self.direction*0.1, heading_angle=0)
                 continue
             if t > 175:  # Last ditch effort to gain some movement points
                 self.flip()
@@ -196,8 +197,8 @@ class HexBot (Robot):
                 if edge:
                     self.gait_manager.command_to_motors(desired_radius=self.direction*0.1, heading_angle=self.direction*0.7)
                 else:
-                    self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
-                    #self.walk()
+                    #self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
+                    self.walk()
 
 
     def detect_line(self):
@@ -220,7 +221,6 @@ class HexBot (Robot):
             return False
 
 
-
     def start_sequence(self):
         """At the beginning of the match, the robot walks forwards to move away from the edges."""
         #self.gait_manager.command_to_motors(desired_radius=-1, heading_angle=-1.4)
@@ -236,10 +236,9 @@ class HexBot (Robot):
     def update_opponent_x(self, img):
         """Get the moving average of the opponents x location"""
         x_pos = self._get_normalized_opponent_x(img)  # -0.1 and 0.1 is basically facing the opponent
-        self.opponent_x.append(x_pos)
-        self.opponent_x.pop(0)
+        x_pos = self.opponent_x_history.get_new_average(x_pos)
 
-        return sum(self.opponent_x) / 10
+        return x_pos
 
 
     def calculate_variance(self, arr):
@@ -254,7 +253,8 @@ class HexBot (Robot):
     def hallucinating(self):
         # do we think we see the opponent when we actually dont?
         # issue with the given _get_normalised_opponent_x function
-        var = self.calculate_variance(self.opponent_x)
+        var = self.calculate_variance(self.opponent_x_history.history)
+        print(var)
         return var > 0.30
 
 
@@ -264,7 +264,7 @@ class HexBot (Robot):
 
         x_pos = self.update_opponent_x(img)
 
-        if (-0.36 < x_pos < 0.36) or self.hallucinating(): # forward
+        if (-0.18 < x_pos < 0.18) or self.hallucinating(): # forward
             self.gait_manager.command_to_motors(desired_radius=0, heading_angle=0)
         elif x_pos > 0: # right
             self.gait_manager.command_to_motors(desired_radius=0.1, heading_angle=1)
