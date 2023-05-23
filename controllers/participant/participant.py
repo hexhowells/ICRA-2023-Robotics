@@ -42,7 +42,7 @@ class HexBot (Robot):
         
         # set variables
         self.last_time = 0
-        self.start_time = 1
+        self.start_time = 2
         self.edge_dist = 100
         self.direction = random.choice([1, -1])
         self.attack_freq = 2
@@ -224,7 +224,7 @@ class HexBot (Robot):
     def start_sequence(self):
         """At the beginning of the match, the robot walks forwards to move away from the edges."""
         #self.gait_manager.command_to_motors(desired_radius=-1, heading_angle=-1.4)
-        self.gait_manager.command_to_motors(desired_radius=self.direction*-0.3, heading_angle=self.direction*0.7)
+        self.gait_manager.command_to_motors(desired_radius=0, heading_angle=self.direction*0.7)
         #self.gait_manager.command_to_motors(heading_angle=0)
 
 
