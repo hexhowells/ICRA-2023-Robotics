@@ -42,7 +42,7 @@ class HexBot (Robot):
         
         # set variables
         self.last_time = 0
-        self.start_time = 4
+        self.start_time = 1
         self.edge_dist = 100
         self.direction = random.choice([1, -1])
         self.attack_freq = 2
