@@ -274,7 +274,6 @@ class HexBot (Robot):
 
     def _get_normalized_opponent_x(self, img):
         """Locate the opponent in the image and return its horizontal position in the range [-1, 1]."""
-        #img = self.camera.get_image()
         _, _, horizontal_coordinate = IP.locate_opponent(img)
 
         if horizontal_coordinate is None:
