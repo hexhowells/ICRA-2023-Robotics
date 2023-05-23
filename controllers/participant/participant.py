@@ -44,7 +44,7 @@ class HexBot (Robot):
         self.last_time = 0
         self.start_time = 1
         self.edge_dist = 100
-        self.direction = random.choice([1, -1])
+        self.direction = 1#random.choice([1, -1])
         self.attack_freq = 2
         self.attack_len = 0.2
         self.opponent_x_history = RunningAverage(dimensions=1, history_steps=5)
