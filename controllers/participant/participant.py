@@ -204,7 +204,6 @@ class HexBot (Robot):
 
     def detect_line(self):
         """Detect the edge of the ring via its distinctive red border"""
-        # Load the image
         img = self.cameraBottom.get_image()
         top_img = self.camera.get_image()
 
