@@ -124,6 +124,7 @@ class HexBot (Robot):
         else:
             self.position_arms()
             
+        # reset timer
         if (t - self.last_time) > self.attack_freq + self.attack_len:
             self.last_time = t
         
