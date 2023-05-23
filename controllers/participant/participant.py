@@ -111,6 +111,7 @@ class HexBot (Robot):
         """Swing arms to attempt to attack the opponent"""
         t = self.getTime()
 
+        # perform attack
         if (t - self.last_time) > self.attack_freq:
             self.RShoulderPitch.setPosition(0.1)
             self.LShoulderPitch.setPosition(0.1)
