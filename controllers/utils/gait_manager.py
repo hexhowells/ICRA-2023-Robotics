@@ -136,7 +136,7 @@ class GaitManager():
 
         # check if the legs are in phase, this causes oscillation and should be avoided/mitigated
         if (sum(self.corr_tracker.values) == self.corr_tracker.n) and diff < 0.01:
-            print("Oscillations detected!")
+            #print("Oscillations detected!")
             if self.rz_tracker.correlation() == 1:
                 z = z - 0.1
             else:

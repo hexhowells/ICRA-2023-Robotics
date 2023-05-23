@@ -254,7 +254,6 @@ class HexBot (Robot):
         # do we think we see the opponent when we actually dont?
         # issue with the given _get_normalised_opponent_x function
         var = self.calculate_variance(self.opponent_x_history.history)
-        print(var)
         return var > 0.30
 
 
