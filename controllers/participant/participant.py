@@ -210,10 +210,10 @@ class HexBot (Robot):
 
         filtered_img = filter_lines(img)
 
+        # split the distances away from the ring into columns
         coords = self.floor_model.segment_floor(filtered_img)
-
         heights = [filtered_img.shape[0]-a[1] for a, b in coords]
-        heights = heights[3:-3]
+        heights = heights[3:-3]  # dont use the edge columns
         heights = [x if x > 0 else 100 for x in heights]
         
         if min(heights) < self.edge_dist:
