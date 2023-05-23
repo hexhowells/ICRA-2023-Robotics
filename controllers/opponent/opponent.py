@@ -26,8 +26,6 @@ class HexBot (Robot):
         self.cameraBottom = Camera(self, camera_name='CameraBottom')
         self.fall_detector = FallDetection(self.time_step, self)
         self.gait_manager = GaitManager(self, self.time_step)
-        self.heading_angle = 3.14 / 2
-        self.counter = 0
         self.opponent_x = [0]*10
 
         # used for detecting the edge of the ring
