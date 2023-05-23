@@ -19,6 +19,7 @@ from imutils import filter_lines
 class HexBot (Robot):
     def __init__(self):
         Robot.__init__(self)
+        # get time step
         self.time_step = int(self.getBasicTimeStep())
 
         # initialise objects
